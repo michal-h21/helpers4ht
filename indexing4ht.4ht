@@ -1,0 +1,22 @@
+\@ifpackageloaded{imakeidx}{%
+	\makeatletter
+	\newcommand\:wrindex[3]{\imki@wrindexentry{#1}{#2}{#3}}
+	\makeatother
+}{%ToDo: Provide configuration for index writing without imakeidx
+	\newcommand\:wrindex[3]{}
+}
+\edef\curseccnt{}
+\renewcommand\index[1]{%
+  \:wrindex{\jobname}{#1}{\getCurrentSectionNumber}
+  \edef\newseccnt{sec\getCurrentSectionNumber}
+  \ifx\newseccnt\curseccnt\else%
+    \Tag{sec\getCurrentSectionNumber}{\CurSecHaddr}
+  \fi%
+  \let\curseccnt\newseccnt
+  %\Link{\CurSecHaddr}{}#1\EndLink%
+}
+\newcommand\hello[1]{%
+\ifTag{sec#1}{\Link{\Ref{sec#1}}{}#1\EndLink}{}%
+\typeout{\LikeRef{sec#1}}
+}
+

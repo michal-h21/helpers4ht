@@ -1,0 +1,21 @@
+\ProvidesPackage{indexing4ht}
+
+% Command for retrieving full section number for current sectioning command
+\newcommand\getCurrentSectionNumber{%
+  \ifnum\c@section=0 %
+  \thechapter
+  \else
+  \ifnum\c@subsection=0 %
+  \thesection
+  \else
+  \ifnum\c@subsubsection=0 %
+  \thesubsection
+  \else
+  \thesubsubsection
+  \fi
+  \fi
+  \fi
+}
+
+
+\endinput
