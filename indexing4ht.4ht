@@ -5,16 +5,33 @@
 }{%ToDo: Provide configuration for index writing without imakeidx
 	\newcommand\:wrindex[3]{}
 }
+
+% because imakeidx has support for multiple indices, we need to select a
+% right one
+\NewConfigure{indexname}{1}
+% default index name is \jobname
+\Configure{indexname}{\jobname}
+
+% configure variable which is saved on every index call
+% section mark is used by default, other possible values may be paragraphs, or
+% links to individual index entries
+\NewConfigure{indexvalue}{1}
+\Configure{indexvalue}{\getCurrentSectionNumber}
+\NewConfigure{indexidentifier}{1}
+
+% we need to suppress adding of multiple identical identifiers
 \edef\curseccnt{}
 \renewcommand\index[1]{%
-  \:wrindex{\jobname}{#1}{\getCurrentSectionNumber}
-  \edef\newseccnt{sec\getCurrentSectionNumber}
+  \:wrindex{\a:indexname}{#1}{\a:indexvalue}
+  \edef\newseccnt{sec\a:indexvalue}
+	% save identifier only if it haven't been used yet
   \ifx\newseccnt\curseccnt\else%
-    \Tag{sec\getCurrentSectionNumber}{\CurSecHaddr}
+    \Tag{sec\a:indexvalue}{\CurSecHaddr}
   \fi%
   \let\curseccnt\newseccnt
   %\Link{\CurSecHaddr}{}#1\EndLink%
 }
+
 \newcommand\hello[1]{%
 \ifTag{sec#1}{\Link{\Ref{sec#1}}{}#1\EndLink}{}%
 \typeout{\LikeRef{sec#1}}
