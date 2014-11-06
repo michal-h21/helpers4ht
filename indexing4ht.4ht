@@ -46,13 +46,21 @@
 \Configure{locatorlink}{\Link}{\EndLink}
 
 % to support crossreferencess, we save index keyword with unique identifier
+
+\GetTitleStringSetup{expand}
+\GetTitleStringDisableCommands{%
+  \renewcommand\LaTeX{LaTeX}
+}
+
 \newcount\idxkwdcnt
 \LinkCommand\IdxKWLink{span,href,id}
 \newcommand\idxkeyword[1]{%
   \global\advance\idxkwdcnt by 1\relax%
   % use tags only one time
+  \GetTitleString{#1}
   \ifcsdef{idxkw#1}{}%
-  {\Tag{idxkw#1}{idxkw\the\idxkwdcnt}}%
+  %{\Tag{idxkw#1}{idxkw\the\idxkwdcnt}}%
+  {\Tag{idxkw\GetTitleStringResult}{idxkw\the\idxkwdcnt}}%
   \csgdef{idxkw#1}{x}
   \a:IdxKW{}{idxkw\the\idxkwdcnt}#1\b:IdxKW
 }
@@ -63,7 +71,8 @@
 
   
 \renewcommand\see[1]{%
-  \a:see\ \ifTag{idxkw#1}{\a:seeLink{\Ref{idxkw#1}}{}#1\b:seeLink}{#1}
+  \GetTitleString{#1}%
+  \a:see\ \ifTag{idxkw#1}{\a:seeLink{\Ref{idxkw\GetTitleStringResult}}{}#1\b:seeLink}{#1}
 }  
 
 % make link configurable, in order to enable user to add custom parameters
@@ -74,7 +83,8 @@
 \Configure{see}{\textit{see}}
 
 \renewcommand\seealso[1]{%
-  \a:seealso\ \ifTag{idxkw#1}{\a:seeAlsoLink{\Ref{idxkw#1}}{}#1\b:seeAlsoLink}{#1}
+  \GetTitleString{#1}%
+  \a:seealso\ \ifTag{idxkw#1}{\a:seeAlsoLink{\Ref{idxkw\GetTitleStringResult}}{}#1\b:seeAlsoLink}{#1}
 }
 
 \NewConfigure{seeAlsoLink}{2}
