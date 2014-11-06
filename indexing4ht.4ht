@@ -10,7 +10,6 @@
 % right one
 \NewConfigure{indexname}{1}
 % default index name is \jobname
-\Configure{indexname}{\jobname}
 
 % configure variable which is saved on every index call
 % section mark is used by default, other possible values may be paragraphs, or
@@ -18,22 +17,69 @@
 \NewConfigure{indexvalue}{1}
 \Configure{indexvalue}{\getCurrentSectionNumber}
 \NewConfigure{indexidentifier}{1}
+\Configure{indexidentifier}{\CurSecHaddr}
 
 % we need to suppress adding of multiple identical identifiers
 \edef\curseccnt{}
-\renewcommand\index[1]{%
-  \:wrindex{\a:indexname}{#1}{\a:indexvalue}
+\renewcommand\index[2][]{%
+  \ifx|#1|%
+     \Configure{indexname}{\jobname}%
+   \else\Configure{indexname}{#1}%
+	 \fi%
+  \:wrindex{\a:indexname}{#2}{\a:indexvalue}
   \edef\newseccnt{sec\a:indexvalue}
 	% save identifier only if it haven't been used yet
   \ifx\newseccnt\curseccnt\else%
-    \Tag{sec\a:indexvalue}{\CurSecHaddr}
+    \Tag{sec\a:indexvalue}{\a:indexidentifier}
   \fi%
   \let\curseccnt\newseccnt
-  %\Link{\CurSecHaddr}{}#1\EndLink%
 }
 
-\newcommand\hello[1]{%
-\ifTag{sec#1}{\Link{\Ref{sec#1}}{}#1\EndLink}{}%
+% print index locators. make links to destinations in document
+\newcommand\idxlocator[1]{%
+\ifTag{sec#1}{\a:locatorlink{\Ref{sec#1}}{}#1\b:locatorlink}{#1}%
+%\ifTag{sec#1}{\Link{\Ref{sec#1}}{}#1\EndLink}{#1}%
 \typeout{\LikeRef{sec#1}}
 }
+
+\NewConfigure{locatorlink}{2}
+\Configure{locatorlink}{\Link}{\EndLink}
+
+% to support crossreferencess, we save index keyword with unique identifier
+\newcount\idxkwdcnt
+\LinkCommand\IdxKWLink{span,href,id}
+\newcommand\idxkeyword[1]{%
+  \global\advance\idxkwdcnt by 1\relax%
+  % use tags only one time
+  \ifcsdef{idxkw#1}{}%
+  {\Tag{idxkw#1}{idxkw\the\idxkwdcnt}}%
+  \csgdef{idxkw#1}{x}
+  \a:IdxKW{}{idxkw\the\idxkwdcnt}#1\b:IdxKW
+}
+
+
+\NewConfigure{IdxKW}{2}
+\Configure{IdxKW}{\IdxKWLink}{\EndIdxKWLink}
+
+  
+\renewcommand\see[1]{%
+  \a:see\ \ifTag{idxkw#1}{\a:seeLink{\Ref{idxkw#1}}{}#1\b:seeLink}{#1}
+}  
+
+% make link configurable, in order to enable user to add custom parameters
+\NewConfigure{seeLink}{2}
+\Configure{seeLink}{\Link}{\EndLink}
+
+\NewConfigure{see}{1}
+\Configure{see}{\textit{see}}
+
+\renewcommand\seealso[1]{%
+  \a:seealso\ \ifTag{idxkw#1}{\a:seeAlsoLink{\Ref{idxkw#1}}{}#1\b:seeAlsoLink}{#1}
+}
+
+\NewConfigure{seeAlsoLink}{2}
+\Configure{seeAlsoLink}{\Link}{\EndLink}
+
+\NewConfigure{seealso}{1}
+\Configure{seealso}{\textit{see also}}
 
