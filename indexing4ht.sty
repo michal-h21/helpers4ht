@@ -18,5 +18,19 @@
   \fi
 }
 
-
+\begin{filecontents*}{\jobname.xdy}
+(define-attributes (("default" "definition" "textbf")))
+( define-location-class "sec-num" :var
+                        ("arabic-numbers" 
+													:sep "." "arabic-numbers"
+													:sep "." "arabic-numbers"
+													:sep "." "arabic-numbers"
+													:sep "." "arabic-numbers"
+))
+(require "texindy.xdy")
+(markup-keyword :open "\idxkeyword{" :close "}" )
+(markup-locref :open "\idxlocator{" :close "}")
+(markup-locref :open "\textbf{\idxlocator{" :close "}}"  :attr "textbf")
+(markup-locref :open "\textbf{\idxlocator{" :close "}}"  :attr "definition")
+\end{filecontents*}
 \endinput
