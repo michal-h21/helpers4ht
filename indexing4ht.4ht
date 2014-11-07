@@ -1,6 +1,9 @@
 \@ifpackageloaded{imakeidx}{%
 	\makeatletter
-	\newcommand\:wrindex[3]{\imki@wrindexentry{#1}{#2}{#3}}
+	\newcommand\:wrindex[3]{%
+	  \edef\th@idx@entry{\detokenize{#2}}
+		\imki@wrindexentry{#1}{\th@idx@entry}{#3}
+	}
 	\makeatother
 }{%ToDo: Provide configuration for index writing without imakeidx
 	\newcommand\:wrindex[3]{}
@@ -58,10 +61,10 @@
   \global\advance\idxkwdcnt by 1\relax%
   % use tags only one time
   \GetTitleString{#1}
-  \ifcsdef{idxkw#1}{}%
+  \ifcsdef{idxkw\GetTitleStringResult}{}%
   %{\Tag{idxkw#1}{idxkw\the\idxkwdcnt}}%
-  {\Tag{idxkw\GetTitleStringResult}{idxkw\the\idxkwdcnt}}%
-  \csgdef{idxkw#1}{x}
+  {\expandafter\Tag\expandafter{idxkw\GetTitleStringResult}{idxkw\the\idxkwdcnt}}%
+  \csgdef{idxkw\GetTitleStringResult}{x}
   \a:IdxKW{}{idxkw\the\idxkwdcnt}#1\b:IdxKW
 }
 
