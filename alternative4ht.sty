@@ -1,0 +1,20 @@
+% Enable tex4ht to patch packages before \begin{document}
+% configurations provided by .4ht files are used after \begin{document}
+% so if some command which causes tex4ht to fail is used in the preamble,
+% we have no chance to catch it
+% with \altusepackage, we may choose to not include package at all, when tex4ht
+% is running, or use special patch file in the form of packagename-alt4ht.sty
+% normal \usepackage is used when tex4ht is not running
+\ProvidesPackage{alternative4ht}
+
+
+\newcommand{\altusepackage}[2][]{%
+    \ifx\HCode\relax%
+    \usepackage[#1]{#2}%
+    \else%
+    \IfFileExists{#2-alt4ht.sty}{%
+      \usepackage[#1]{#2-alt4ht}%
+    }{\typeout{alternative4ht: no patch file for #2}}
+    \fi%
+}
+\endinput
