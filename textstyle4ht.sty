@@ -1,0 +1,16 @@
+\RequirePackage{xcolor}
+
+% extract current color as hexadecimal value
+\newcommand\tsf@getColor[1][.]{
+	% colorname `.` holds current color
+	\extractcolorspec{.}{\tsf@color}
+	\expandafter\convertcolorspec\tsf@color{HTML}\tsf@color
+	%\tmpcolor
+}
+
+% write css color for given css selector
+\newcommand\CssColor[1]{%
+	% save current color
+	\tsf@getColor%
+	\Css{#1{color:\#\tsf@color;}}%
+}
