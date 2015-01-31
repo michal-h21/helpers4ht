@@ -3,7 +3,7 @@
 % extract current color as hexadecimal value
 \newcommand\tsf@getColor[1][.]{
 	% colorname `.` holds current color
-	\extractcolorspec{.}{\tsf@color}
+	\extractcolorspec{#1}{\tsf@color}
 	\expandafter\convertcolorspec\tsf@color{HTML}\tsf@color
 	%\tmpcolor
 }
@@ -13,4 +13,9 @@
 	% save current color
 	\tsf@getColor%
 	\Css{#1{color:\#\tsf@color;}}%
+}
+
+\newcommand\DeclareHColor[1]{%
+  \tsf@getColor[#1]%
+  \Configure{HColor}{#1}{\#\tsf@color}%
 }
