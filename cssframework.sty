@@ -1,0 +1,66 @@
+\ProvidesPackage{cssframework}
+\edef\css@curroutpufile{}
+
+% open css file
+\newcommand\cssstartoutput[1]{%
+	\xdef\css@curroutpufile{#1}%
+  \special{t4ht>\css@curroutpufile}%
+}
+
+% close css file
+\newcommand\cssstopoutput{%
+  \special{t4ht<\css@curroutpufile}%
+}
+
+\newcommand\CssLink[1]{%
+	\Configure{@HEAD}%
+	  {\HCode{<link rel="stylesheet" type="text/css" href="#1" />}}%
+}
+% #1 template name
+% #2 css output file
+\newcommand\processcss[2]{%
+	\CssLink{#2}
+	\AtBeginDocument{%
+	\cssstartoutput{#2}%
+	\NoFonts%
+	\input{#1}%
+	\EndNoFonts%
+	\cssstopoutput%
+  }
+}
+
+\newcommand\includecss[1]{%
+  \CssLink{#1}%
+  \special{t4ht+@File: #1}
+}
+
+\edef\css@selectrpath{}
+\def\hnl{\HCode{\Hnewline}}
+%\def\finselectr{}
+\newcommand\Selector[2]{%
+	\bgroup%
+	\edef\css@selectrpath{\css@selectrpath{} #1}
+	\hnl\unskip\css@selectrpath\{\hnl
+	#2
+  \hnl\}\hnl
+	\egroup%
+}
+
+% support for media queries 
+% default medium is all, #2 is rule, #3 is 
+\newcommand\MediaQuery[3][all]{%
+	@media #1 and (#2)\{\hnl
+		#3\hnl%
+		\}\hnl%
+}
+
+% Various helper functions
+% default font size
+\newcommand\emwidth{16}
+% convert pt to rem
+\newcommand\CalcRem[1]{\strip@pt\dimexpr(#1)/\emwidth}
+% support for browsers without rem 
+\newcommand\RemProperty[2]{%
+	  #1:\the\dimexpr #2\relax;#1:\CalcRem{#2}rem;
+}
+	
