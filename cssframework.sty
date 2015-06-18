@@ -1,4 +1,5 @@
 \ProvidesPackage{cssframework}
+\RequirePackage{include4ht}
 \edef\css@curroutpufile{}
 
 % open css file
@@ -30,8 +31,7 @@
 }
 
 \newcommand\includecss[1]{%
-  \CssLink{#1}%
-  \special{t4ht+@File: #1}
+  \AddCss{#1}%
 }
 
 \edef\css@selectrpath{}
