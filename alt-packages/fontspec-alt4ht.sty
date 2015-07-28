@@ -1,0 +1,16 @@
+\RequirePackage{ifluatex}
+\RequirePackage{xparse}
+
+\DeclareDocumentCommand{\newfontfamily}{m o m}{\gdef#1{\relax}}
+\DeclareDocumentCommand{\setmainfont}{m o}{}
+
+% we can use callback to escape unicode characters with LuaLaTeX, we need other method for XeLaTeX
+\ifluatex
+\RequirePackage{luatexbase}
+\directlua{%
+local fontspec = require "fontspec-4ht"
+luatexbase.add_to_callback("pre_linebreak_filter", fontspec.char_to_entity, "Char to entity")
+}
+\else
+
+\fi
