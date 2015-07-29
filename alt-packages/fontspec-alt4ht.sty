@@ -1,12 +1,30 @@
 \RequirePackage{ifluatex}
 \RequirePackage{xparse}
 
+% we will just define font commands to do nothing. we are only interested in exporting unicode values
+
+% main commands
+
 \DeclareDocumentCommand{\newfontfamily}{m o m}{\gdef#1{\relax}}
 \DeclareDocumentCommand{\newfontface}{m o m}{\gdef#1{\relax}}
 \DeclareDocumentCommand{\setmainfont}{m o}{}
 \DeclareDocumentCommand{\setsansfont}{m o}{}
 \DeclareDocumentCommand{\setmonofont}{m o}{}
 \DeclareDocumentCommand{\fontspec}{m o}{}
+
+% math commands
+
+\DeclareDocumentCommand{\setmathrm}{m o}{}
+\DeclareDocumentCommand{\setmathsf}{m o}{}
+\DeclareDocumentCommand{\setmathtt}{m o}{}
+\DeclareDocumentCommand{\setboldmathrm}{m o}{}
+
+% features
+
+\DeclareDocumentCommand{\defaultfontfeatures}{t+ o m}{}
+\DeclareDocumentCommand{\addfontfeatures}{m}{}
+\DeclareDocumentCommand{\addfontfeature}{m}{}
+
 
 % we can use callback to escape unicode characters with LuaLaTeX, we need other method for XeLaTeX
 \ifluatex
