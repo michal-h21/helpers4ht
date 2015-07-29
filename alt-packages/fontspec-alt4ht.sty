@@ -2,7 +2,11 @@
 \RequirePackage{xparse}
 
 \DeclareDocumentCommand{\newfontfamily}{m o m}{\gdef#1{\relax}}
+\DeclareDocumentCommand{\newfontface}{m o m}{\gdef#1{\relax}}
 \DeclareDocumentCommand{\setmainfont}{m o}{}
+\DeclareDocumentCommand{\setsansfont}{m o}{}
+\DeclareDocumentCommand{\setmonofont}{m o}{}
+\DeclareDocumentCommand{\fontspec}{m o}{}
 
 % we can use callback to escape unicode characters with LuaLaTeX, we need other method for XeLaTeX
 \ifluatex
