@@ -1,1 +1,19 @@
-\newcommand\setdefaultlanguage[1]{}
+\ProvidesPackage{polyglossia-alt4ht}
+% save main language so we can work with it later
+% this is basically copied from babel
+\newcommand\setdefaultlanguage[1]{%
+  \gdef\bbl@main@language{#1}%
+  \let\languagename\bbl@main@language%
+}
+
+% this is just alias
+\newcommand\setmainlanguage[1]{\setdefaultlanguage{#1}}
+
+% we 
+\newcommand\setotherlanguage[1]{}
+\newcommand\setotherlanguages[1]{}
+
+% we can also try to pretend that fontspec is loaded
+% but we will need to provide more macros and Lua functions in order to do that!
+% \@namedef{ver@fontspec.sty}{}
+% \RequirePackage{polyglossia}
