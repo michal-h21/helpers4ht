@@ -1,16 +1,34 @@
 \ProvidesPackage{polyglossia-alt4ht}
+
+% we need helper macros which can be configured from tex4ht, because we don't know all possible
+% names for \text<lang> and \begin{<lang>}
+\newcommand\printlang[1]{#1}
+\newcommand\Startlang{}
+\newcommand\Endlang{}
+
+% emulate basic commands
+\newcommand\polyselect@language[1]{%
+  \gdef\languagename{#1}%
+}
+
+% make language selectiong command and environment
+\newcommand\poly@setuplanguage[1]{%
+  \expandafter\gdef\csname text#1\endcsname##1{\polyselect@language{#1}\printlang{##1}}
+  \newenvironment{#1}[1][]{\polyselect@language{#1}\Startlang}{\Endlang}
+}
 % save main language so we can work with it later
 % this is basically copied from babel
 \newcommand\setdefaultlanguage[1]{%
   \gdef\bbl@main@language{#1}%
-  \let\languagename\bbl@main@language%
+  \poly@setuplanguage{#1}
+  \polyselect@language{#1}
 }
 
 % this is just alias
 \newcommand\setmainlanguage[1]{\setdefaultlanguage{#1}}
 
 % we 
-\newcommand\setotherlanguage[1]{}
+\newcommand\setotherlanguage[1]{\poly@setuplanguage{#1}}
 \newcommand\setotherlanguages[1]{}
 
 % we can also try to pretend that fontspec is loaded
