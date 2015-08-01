@@ -1,3 +1,40 @@
-# `helpers4ht` package. 
+# The `helpers4ht` package. 
+
+This is a bundle of packages providing support for tex4ht configuration. With some exceptions, you shouldn't use them in your documents, but in the `.cfg` files instead. Provided packages are:
+
+alternative4ht
+
+:  provides support for patching unsupported packages with tex4ht. See [Using fontspec package with tex4ht](http://michal-h21.github.io/samples/helpers4ht/fontspec.html) for example.
+
+
+cssframework
+
+:  simple CSS framework and preprocessor. It doesn't have any documentation or sample usage yet
+
+include4ht 
+
+:  declare additional files to be included, like CSS or Javascript. [Example](http://tex.stackexchange.com/a/210849/2891)
+
+indexing4ht
+
+:  support for indexing with Xindy see an [example](http://tex.stackexchange.com/a/210849/2891)
+
+rfclang
+
+:  get RFC language codes from babel language name
+
+textstyle4ht
+
+:  support for conversion of LaTeX text styling (color, size, etc.) to CSS. new commands tor tag insertion
+
+# Installation
+
+
+    cd `kpsewhich -var-value TEXMFHOME`
+    mkdir -p tex/latex
+    cd tex/latex
+    git clone git@github.com:michal-h21/helpers4ht.git
+
+
 
 See [wiki](https://github.com/michal-h21/helpers4ht/wiki) for more information.
