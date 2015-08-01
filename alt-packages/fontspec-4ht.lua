@@ -26,7 +26,6 @@ function M.char_to_entity(head)
       -- in standard tex4ht accented characters are replaced with "x" char. they are later removed anyway
       -- maybe we don't need to do that, but we can, so why not?
       n.char = xchar
-      print(new)
     end
   end
   return head
