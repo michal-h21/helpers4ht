@@ -54,6 +54,23 @@
   }
 }
 
+\NewDocumentCommand\TSFontSeries{m m}{
+  \cs_new:cpn{ts-font-series#1}{#2}
+}
+
+\NewDocumentCommand\TSFontShape{m m}{
+  \cs_new:cpn{ts-font-shape#1}{#2}
+}
+
+\cs_new:Npn\tsf@getseries{
+  \cs_if_exist_use:c{ts-font-series\f@series}
+}
+
+\cs_new:Npn\tsf@getshape{
+  \cs_if_exist_use:c{ts-font-shape\f@shape}
+}
+
+
 \cs_new:Npn\ts_get_tag#1#2#3{#1}
 \cs_new:Npn\ts_get_class#1#2#3{#2}
 \cs_new:Npn\ts_get_end#1#2#3{#3}
@@ -69,11 +86,20 @@
   \expandafter\ts_save_style\ts_current_params
 }
 
+% trick to grab the style inside command which can't be modified
+% #1 \InlineTag or \BlockTag with all parameters
+% #2 command which we want to grab
+\NewDocumentCommand{\GrabStyle}{ m m }{
+  \setbox0=\hbox{#1#2{\SaveStyle}\EndTag}
+  \expandafter\Css\expandafter{\css@body}
+  \typeout{\css@body}
+}
+
 % optional element name, class, attributes
 \NewDocumentCommand{\InlineTag}{ o m m }
 {
   \ts_set_tag{#1}{\ts_default_inline}
-  \ts_print_tag{#2}{#3}{\EndNoFonts}\NoFonts
+  \ts_print_tag{#2}{#3}{}
 }
 
 \NewDocumentCommand{\BlockTag}{ o m m }
@@ -111,17 +137,31 @@
 	\Css{#1{color:\#\tsf@color;}}%
 }
 
+\TSFontShape{n}{font-style:normal;}
+\TSFontShape{it}{font-style:italic;}
+\TSFontShape{sl}{font-style:oblique;}
+\TSFontShape{sc}{font-variant:small-caps;}
+
+\TSFontSeries{m}{font-weight:normal;}
+\TSFontSeries{b}{font-weight:bold;}
+\TSFontSeries{bx}{font-weight:600;}
+\TSFontSeries{sb}{font-weight:900;}
+\TSFontSeries{c}{font-stretch: condensed;}
+
 % write css font information of current font face
 \newcommand\FontAttr[1]{%
   \bgroup\normalsize
   \xdef\tsf@normalsize{\RoundingUpFunction{\f@size}}
   \egroup
-  \edef\tsf@fontsize{\strip@pt\dimexpr\f@size pt/\tsf@normalsize\relax}
+  \edef\tsf@fontsize{\strip@pt\dimexpr\f@size pt/\tsf@normalsize\relax rem}
   \tsf@getColor
-  \Css{#1{
+  \xdef\css@body{#1{
       font-size:\tsf@fontsize;
       color: \#\tsf@color;
+      \tsf@getseries
+      \tsf@getshape 
     }}
+  \expandafter\Css\expandafter{\css@body}
 }
 
 \newcommand\DeclareHColor[1]{%
