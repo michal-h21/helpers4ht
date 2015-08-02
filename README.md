@@ -25,7 +25,7 @@ rfclang
 
 textstyle4ht
 
-:  support for conversion of LaTeX text styling (color, size, etc.) to CSS. new commands tor tag insertion
+:  support for conversion of LaTeX text styling (color, size, etc.) to CSS. new commands tor tag insertion are introduced. See a [tutorial](http://michal-h21.github.io/samples/helpers4ht/fontspec.html)
 
 # Installation
 
