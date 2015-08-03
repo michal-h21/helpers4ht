@@ -1,4 +1,126 @@
+\ProvidesPackage{textstyle4ht}
 \RequirePackage{xcolor}
+\RequirePackage{cssframework}
+\RequirePackage{xparse}
+\ExplSyntaxOn
+
+% some helper macros using LaTeX3
+% I know this style mixing is ugly, but I am too used to old school :)
+\NewDocumentCommand {\RoundingUpFunction} { m }
+ {
+  \fp_eval:n { ceil(#1) }
+ }
+
+\seq_new:N \ts_tag_stack
+\tl_new:N \ts_current_tag
+\tl_new:N \ts_current_params
+\tl_new:N \ts_default_inline
+\tl_new:N \ts_default_block
+
+\NewDocumentCommand {\PushTag}{ m }
+{
+  \seq_gpush:Nx \ts_tag_stack {#1}
+}
+
+\NewDocumentCommand {\PopTag}{ }
+{
+  \seq_gpop:NN \ts_tag_stack \ts_current_params
+}
+
+\NewDocumentCommand{\DefaultInlineTag}{ m }
+{
+  \tl_set:Nn \ts_default_inline {#1}
+}
+
+\NewDocumentCommand{\DefaultBlockTag}{ m }
+{
+  \tl_set:Nn \ts_default_block {#1}
+}
+
+\DefaultInlineTag{span}
+\DefaultBlockTag{div}
+
+% print an element 
+\cs_new:Npn\ts_print_tag#1#2#3{
+  \tl_gset:Nn\ts_current_params{{\ts_current_tag}{#1}{#3}}
+  \PushTag{\ts_current_params}
+  #3\HCode{<\ts_current_tag}\HCode{~ class="#1" #2>} 
+}
+\cs_new:Npn\ts_set_tag#1#2{
+  \IfNoValueTF{#1}{
+    \tl_gset:Nn \ts_current_tag {#2}
+  }{
+    \tl_gset:Nn \ts_current_tag {#1}
+  }
+}
+
+\NewDocumentCommand\TSFontSeries{m m}{
+  \cs_new:cpn{ts-font-series#1}{#2}
+}
+
+\NewDocumentCommand\TSFontShape{m m}{
+  \cs_new:cpn{ts-font-shape#1}{#2}
+}
+
+\cs_new:Npn\tsf@getseries{
+  \cs_if_exist_use:c{ts-font-series\f@series}
+}
+
+\cs_new:Npn\tsf@getshape{
+  \cs_if_exist_use:c{ts-font-shape\f@shape}
+}
+
+
+\cs_new:Npn\ts_get_tag#1#2#3{#1}
+\cs_new:Npn\ts_get_class#1#2#3{#2}
+\cs_new:Npn\ts_get_end#1#2#3{#3}
+\cs_new:Npn\ts_save_style#1#2#3{
+  \cs_if_exist_use:cTF{ts_tag_#1_#2}{}
+  {
+    \cs_new:cpn{ts_tag_#1_#2}{\relax}
+    \FontAttr{#1.#2}
+  }
+}
+
+\NewDocumentCommand{\SaveStyle}{}{
+  \expandafter\ts_save_style\ts_current_params
+}
+
+% trick to grab the style inside command which can't be modified
+% #1 \InlineTag or \BlockTag with all parameters
+% #2 command which we want to grab
+\NewDocumentCommand{\GrabStyle}{ m m }{
+  \setbox0=\hbox{#1#2{\SaveStyle}\EndTag}
+  \expandafter\Css\expandafter{\css@body}
+  \typeout{\css@body}
+}
+
+% optional element name, class, attributes
+\NewDocumentCommand{\InlineTag}{ o m m }
+{
+  \ts_set_tag{#1}{\ts_default_inline}
+  \ts_print_tag{#2}{#3}{}
+}
+
+\NewDocumentCommand{\BlockTag}{ o m m }
+{
+  \ts_set_tag{#1}{\ts_default_block}
+  \ts_print_tag{#2}{#3}{\ifvmode\IgnorePar\fi\EndP}
+  \par
+}
+
+
+
+\NewDocumentCommand{\EndTag}{ }
+{
+  \seq_gpop:NNTF \ts_tag_stack \ts_current_params {
+  %\PopTag
+  \SaveStyle
+  \expandafter\ts_get_end\ts_current_params
+  \HCode{</\expandafter\ts_get_tag\ts_current_params>}
+  }{\typeout{textstyle4ht warning: tag stack is empty}}
+}
+\ExplSyntaxOff
 
 % extract current color as hexadecimal value
 \newcommand\tsf@getColor[1][.]{
@@ -13,6 +135,33 @@
 	% save current color
 	\tsf@getColor%
 	\Css{#1{color:\#\tsf@color;}}%
+}
+
+\TSFontShape{n}{font-style:normal;}
+\TSFontShape{it}{font-style:italic;}
+\TSFontShape{sl}{font-style:oblique;}
+\TSFontShape{sc}{font-variant:small-caps;}
+
+\TSFontSeries{m}{font-weight:normal;}
+\TSFontSeries{b}{font-weight:bold;}
+\TSFontSeries{bx}{font-weight:600;}
+\TSFontSeries{sb}{font-weight:900;}
+\TSFontSeries{c}{font-stretch: condensed;}
+
+% write css font information of current font face
+\newcommand\FontAttr[1]{%
+  \bgroup\normalsize
+  \xdef\tsf@normalsize{\RoundingUpFunction{\f@size}}
+  \egroup
+  \edef\tsf@fontsize{\strip@pt\dimexpr\f@size pt/\tsf@normalsize\relax rem}
+  \tsf@getColor
+  \xdef\css@body{#1{
+      font-size:\tsf@fontsize;
+      color: \#\tsf@color;
+      \tsf@getseries
+      \tsf@getshape 
+    }}
+  \expandafter\Css\expandafter{\css@body}
 }
 
 \newcommand\DeclareHColor[1]{%

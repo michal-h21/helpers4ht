@@ -9,12 +9,12 @@
 
 
 \newcommand{\altusepackage}[2][]{%
-    \ifx\HCode\relax%
-    \usepackage[#1]{#2}%
-    \else%
+    \ifdefined\HCode%
     \IfFileExists{#2-alt4ht.sty}{%
       \usepackage[#1]{#2-alt4ht}%
     }{\typeout{alternative4ht: no patch file for #2}}
+    \else%
+    \usepackage[#1]{#2}%
     \fi%
 }
 \endinput

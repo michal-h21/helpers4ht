@@ -1,0 +1,59 @@
+\ProvidesPackage{xeCJK-alt4ht}
+\RequirePackage{xparse}
+
+% support xeCJK document commands
+\NewDocumentCommand\xeCJKShipoutHook{}{}
+\NewDocumentCommand \makexeCJKactive   { } { \XeTeXinterchartokenstate = 1  }
+\NewDocumentCommand \makexeCJKinactive { } { \XeTeXinterchartokenstate = 0 }
+\NewDocumentCommand \xeCJKDeclareCharClass { s > { \TrimSpaces } m m }
+  {}
+\NewDocumentCommand \xeCJKnobreak { }{}
+
+% basic font commands
+\NewDocumentCommand \setCJKfallbackfamilyfont { m O { } m }{}
+\NewDocumentCommand \CJKfamily { t+ t- m }{}
+\NewDocumentCommand \setCJKmainfont { O { } m }{}
+\NewDocumentCommand \setCJKsansfont { O { } m }{}
+\NewDocumentCommand \setCJKmonofont { O { } m }{}
+
+% families
+\NewDocumentCommand \setCJKfamilyfont { m O { } m }{\gdef#1{\relax}}
+\NewDocumentCommand \newCJKfontfamily { o m O { } m }{\gdef#2{\relax}}
+\NewDocumentCommand \CJKfontspec { O { } m }{}
+
+% font features
+\NewDocumentCommand \defaultCJKfontfeatures { m }{}
+\NewDocumentCommand \addCJKfontfeatures { s O { } m }{}
+
+% math fonts
+\NewDocumentCommand \setCJKmathfont { O { } m }{}
+
+% misc?
+\NewDocumentCommand \xeCJKVerbAddon { }{}
+\NewDocumentCommand \xeCJKOffVerbAddon { }{}
+
+\NewDocumentCommand \xeCJKsetup { m }{}
+
+% verbatim copy
+\NewDocumentCommand \xeCJKsetemboldenfactor { m }
+  { \xeCJKsetup { EmboldenFactor = {#1} } }
+\NewDocumentCommand \xeCJKsetslantfactor { m }
+  { \xeCJKsetup { SlantFactor = {#1} } }
+\NewDocumentCommand \punctstyle { m } { \xeCJKsetup { PunctStyle = {#1} } }
+\NewDocumentCommand \xeCJKplainchr { } { \xeCJKsetup { PunctStyle = plain } }
+\NewDocumentCommand \CJKsetecglue { m } { \xeCJKsetup { CJKecglue = {#1} } }
+\NewDocumentCommand \CJKspace   { } { \xeCJKsetup { CJKspace = true } }
+\NewDocumentCommand \CJKnospace { } { \xeCJKsetup { CJKspace = false } }
+\NewDocumentCommand \xeCJKallowbreakbetweenpuncts { }
+  { \xeCJKsetup { AllowBreakBetweenPuncts = true } }
+\NewDocumentCommand \xeCJKnobreakbetweenpuncts { }
+  { \xeCJKsetup { AllowBreakBetweenPuncts = false } }
+\NewDocumentCommand \xeCJKenablefallback { }
+  { \xeCJKsetup { AutoFallBack = true } }
+\NewDocumentCommand \xeCJKdisablefallback { }
+  { \xeCJKsetup { AutoFallBack = false } }
+
+% ToDo: add support for xuninode-addon.sty - it loads EU2 or EU1 encodings,
+%       how to prevent that?
+
+
