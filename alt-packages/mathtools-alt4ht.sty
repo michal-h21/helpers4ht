@@ -1,0 +1,18 @@
+\ProvidesPackage{mathtools-alt4ht}
+\RequirePackage{mathtools}
+
+\MHInternalSyntaxOn
+
+\renewcommand\MT_delim_default_inner_wrappers:n [1]{
+   \@namedef{MT_delim_\MH_cs_to_str:N #1 _star_wrapper:nnn}##1##2##3{
+      %\mathopen{}\mathclose\bgroup ##1 ##2 \aftergroup\egroup ##3 
+      ##1##2##3
+    }
+    \@namedef{MT_delim_\MH_cs_to_str:N #1 _nostar_wrapper:nnn}##1##2##3{
+      \mathopen{##1}##2\mathclose{##3}
+    }
+  }
+\MHInternalSyntaxOff
+
+
+
