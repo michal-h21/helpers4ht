@@ -1,0 +1,44 @@
+\RequirePackage{verbatim}
+\AtBeginDocument{%
+  \Configure{VERSION}{}
+  \Configure{DOCTYPE}{\HCode{<!DOCTYPE html>\Hnewline}}
+  \Configure{HTML}{\HCode{<html>\Hnewline}}{\HCode{\Hnewline</html>}}
+  %\Configure{@HEAD}{\HCode{<link href="basic.css" rel="stylesheet" type="text/css" />\Hnewline}} 
+  \Configure{@HEAD}{\HCode{
+      <script type="text/x-mathjax-config">                                           
+      MathJax.Hub.Config({
+        TeX: {           
+          extensions: ["color.js"], 
+          equationNumbers: { autoNumber: "AMS" }         
+        },        
+        extensions: ["tex2jax.js"], 
+        tex2jax: {       
+          \unexpanded{
+            inlineMath: [ ['\$','\$'], ["\\\(","\\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],}
+          processEscapes: true,
+          processEnvironments: true
+        }                   
+      });                  
+      </script>\Hnewline
+    }}
+  \Configure{@HEAD}{\HCode{ <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> \Hnewline}}
+  \newtoks\eqtoks
+  \def\AltMathOne#1${\HCode{\detokenize{$#1$}}$}
+  \Configure{$}{}{}{\expandafter\AltMathOne} 
+  \def\AltlMath#1\){\HCode{\detokenize{\(#1\)}}\)}
+  \Configure{()}{\AltlMath}{}
+  \def\AltlDisplay#1\]{\HCode{\detokenize{\[#1\]}}\]}
+  \Configure{[]}{\AltlDisplay}{}
+}
+% 
+\newcommand\VerbMath[1]{%
+  \renewenvironment{#1}{%
+    \NoFonts%
+    \string\begin\{#1\}%
+      \verbatim}{\endverbatim\string\end\{#1\}\EndNoFonts}%
+}
+
+\VerbMath{align}
+\VerbMath{equation}
+\VerbMath{equation*}
