@@ -27,6 +27,11 @@ textstyle4ht
 
 :  support for conversion of LaTeX text styling (color, size, etc.) to CSS. new commands tor tag insertion are introduced. See a [tutorial](http://michal-h21.github.io/samples/helpers4ht/textstyle.html)
 
+mathjax-latex-4ht
+
+> :  save LaTeX math verbatim in the output document and use `Mathjax` for the displaying. See 
+[this answer](http://tex.stackexchange.com/a/185802/2891) for more details
+
 # Installation
 
 
@@ -35,6 +40,13 @@ textstyle4ht
     cd tex/latex
     git clone git@github.com:michal-h21/helpers4ht.git
 
+#Usage
 
+To use package in the `.cfg` file, you must include it before the `\Preamble` command:
+
+    \RequirePackage{cssframework}
+    \Preamble{xhtml}
+    \begin{document}
+    \EndPreamble
 
 See [wiki](https://github.com/michal-h21/helpers4ht/wiki) for more information.
