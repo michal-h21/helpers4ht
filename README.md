@@ -6,7 +6,6 @@ alternative4ht
 
 :  provides support for patching unsupported packages with tex4ht. See [Using fontspec package with tex4ht](http://michal-h21.github.io/samples/helpers4ht/fontspec.html) for example.
 
-
 cssframework
 
 :  simple CSS framework and preprocessor. It doesn't have any documentation or sample usage yet
