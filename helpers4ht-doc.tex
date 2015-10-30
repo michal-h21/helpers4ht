@@ -1,0 +1,24 @@
+\documentclass{article}
+
+
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\ifdefined\HCode
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\else
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Schola}
+\fi
+\usepackage{microtype}
+
+\title{The \texttt{helpers4ht} bundle}
+\author{Michal Hoftich\footnote{\url{michal.h21@gmail.com}}}
+\date{Version 0.1\\25/09/2015}
+\begin{document}
+\maketitle
+\tableofcontents
+\input{readme}
+
+\input{changelog}
+\end{document}
