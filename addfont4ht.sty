@@ -1,25 +1,20 @@
 \RequirePackage{include4ht}
 \newcommand\AddFontFace[4]{%
-  \Css{@font-face {
-      font-family: #1;
-      src: local(”#2”),
-      url(’#3’);
-      #4
-    }}
-  \AddFile{#3}}
+\Css{@font-face {
+    font-family: #1;
+    src: local("#2"),
+        url('#3');
+    #4
+ }}
+\AddFile{#3}
+}
 \edef\CurrentFontFamily{rmfamily}
 \newcommand\SetFontFamily[1]{
-  \edef\CurrentFontFamily{#1}
+\edef\CurrentFontFamily{#1}
 }
+\newcommand\NormalFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: normal;font-style: normal;}}
 
-\newcommand\NormalFont[2]{
-  \AddFontFace{\CurrentFontFamily}{#1}{#2}
-  {font-weight: normal;font-style: normal;}}
-\newcommand\BoldFont[2]{
-  \AddFontFace{\CurrentFontFamily}{#1}{#2}
-  {font-weight: bold;font-style: normal;}}
-\newcommand\ItalicFont[2]{
-  \AddFontFace{\CurrentFontFamily}{#1}{#2}
-  {font-weight: normal;font-style: italic;}}
-
+\newcommand\BoldFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: bold;font-style: normal;}}
+\newcommand\ItalicFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: normal;font-style: italic;}}
+\newcommand\BoldItalicFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: bold;font-style: italic;}}
 
