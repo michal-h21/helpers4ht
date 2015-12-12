@@ -5,7 +5,10 @@ INSTALL_DIR = $(TEXMFHOME)/tex/latex/helpers4ht
 MANUAL_DIR = $(TEXMFHOME)/doc/latex/helpers4ht
 SYSTEM_DIR = /usr/local/bin
 BUILD_DIR = build
-BUILD_TEX4EBOOK = $(BUILD_DIR)/helpers4ht/
+ALT_DIR = /alt-packages
+BUILD_HELPERS = $(BUILD_DIR)/helpers4ht/
+BUILD_ALT = $(BUILD_HELPERS)/alt-packages
+alt = $(wildcard alt-packages/*.sty)
 
 all: doc
 
@@ -22,16 +25,16 @@ changelog.tex: CHANGELOG.md
 
 build: doc $(tex_content)
 	@rm -rf build
-	@mkdir -p $(BUILD_TEX4EBOOK)
-	@cp $(tex_content)  helpers4ht-doc.pdf $(BUILD_TEX4EBOOK)
-	@cp README.md $(BUILD_TEX4EBOOK)README
+	@mkdir -p $(BUILD_ALT)
+	@cp $(tex_content)  helpers4ht-doc.pdf $(BUILD_HELPERS)
+	@cp README.md $(BUILD_HELPERS)README
+	@cp $(alt) $(BUILD_ALT)
 	cd $(BUILD_DIR) && zip -r helpers4ht.zip helpers4ht
 
 install: doc $(tex_content)
 	mkdir -p $(INSTALL_DIR)
 	mkdir -p $(MANUAL_DIR)
 	cp $(tex_content) $(INSTALL_DIR)
+	cp $(alt) $(INSTALL_DIR)$(ALT_DIR)
 	cp $(doc_file) $(MANUAL_DIR)
-	chmod +x $(INSTALL_DIR)/helpers4ht
-	ln -s $(INSTALL_DIR)/helpers4ht $(SYSTEM_DIR)/helpers4ht
 

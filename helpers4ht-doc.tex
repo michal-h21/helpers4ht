@@ -1,0 +1,48 @@
+\documentclass{article}
+
+
+\usepackage[english]{babel}
+\usepackage{hyperref}
+\ifdefined\HCode
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\else
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Schola}
+\fi
+\usepackage{microtype}
+
+\title{The \texttt{helpers4ht} bundle}
+\author{Michal Hoftich\footnote{\url{michal.h21@gmail.com}}}
+\date{Version 0.1\\12/11/2015}
+\begin{document}
+\maketitle
+\tableofcontents
+This is a bundle of packages providing support for tex4ht configuration. With
+the exception of \texttt{alternative4ht}, you shouldn't use them in your
+documents, but put them in a \texttt{.cfg} file instead. 
+
+A \texttt{cfg} file is \TeX\ file with special structure, which provides
+configurations for  \texttt{tex4ht} conversion. The basic structure is following:
+
+\begin{verbatim}
+ ...early definitions...
+ \Preamble{options}
+ ...definitions...
+ \begin{document}
+ ...insertions into the header of the html file...
+ \EndPreamble 
+\end{verbatim}
+
+Options for \verb|\Preamble| commands are the same as for second parameter of 
+\texttt{htlatex} command, for example:
+
+\begin{verbatim}
+  \Preamble{xhtml,2}
+\end{verbatim}
+
+
+\input{readme}
+
+\input{changelog}
+\end{document}
