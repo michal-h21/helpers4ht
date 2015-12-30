@@ -1,7 +1,9 @@
 \ProvidesPackage{polyglossia-alt4ht}
+\RequirePackage{etoolbox,xkeyval}
 
 % we need helper macros which can be configured from tex4ht, because we don't know all possible
 % names for \text<lang> and \begin{<lang>}
+% \long\gdef\printlang#1{#1}
 \newcommand\printlang[1]{#1}
 \newcommand\Startlang{}
 \newcommand\Endlang{}
@@ -9,12 +11,30 @@
 % emulate basic commands
 \newcommand\polyselect@language[1]{%
   \gdef\languagename{#1}%
+  \ifcsdef{date#1}{\csuse{date#1}}{}
+  \ifcsdef{captions#1}{\csuse{captions#1}}{}
+}
+
+% load language file
+
+\newcommand\poly@load@lang@file[1]{%
+  \typeout{Ujj #1}
+  \IfFileExists{gloss-#1.ldf}{%
+    \ifcsundef{#1@loaded}{%
+      \makeatletter
+      \input{gloss-#1.ldf}
+      \makeatother
+      \csgdef{#1@loaded}{\relax}
+    }{}
+  }{\typeout{}}
 }
 
 % make language selectiong command and environment
 \newcommand\poly@setuplanguage[1]{%
-  \expandafter\gdef\csname text#1\endcsname##1{\polyselect@language{#1}\printlang{##1}}
+  % \expandafter\long\expandafter\gdef\csname text#1\endcsname##1{\polyselect@language{#1}\printlang{##1}}
+  \long\csgdef{text#1}##1{\bgroup\polyselect@language{#1}\printlang{##1}\egroup}
   \newenvironment{#1}[1][]{\polyselect@language{#1}\Startlang}{\Endlang}
+  \poly@load@lang@file{#1}
 }
 % save main language so we can work with it later
 % this is basically copied from babel
@@ -30,6 +50,13 @@
 % we 
 \newcommand\setotherlanguage[1]{\poly@setuplanguage{#1}}
 \newcommand\setotherlanguages[1]{}
+
+% Add commands used in language files
+
+\newcommand\PolyglossiaSetup[2]{}
+\newcommand\xpg@warning[1]{\typeout{[Polyglossia]: #1}}
+\newif\ifsystem@babelshorthands
+\system@babelshorthandsfalse
 
 % we can also try to pretend that fontspec is loaded
 % but we will need to provide more macros and Lua functions in order to do that!
