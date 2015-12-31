@@ -3,8 +3,6 @@
 
 % we need helper macros which can be configured from tex4ht, because we don't know all possible
 % names for \text<lang> and \begin{<lang>}
-% \long\gdef\printlang#1{#1}
-\newcommand\printlang[1]{#1}
 \newcommand\Startlang{}
 \newcommand\Endlang{}
 
@@ -31,8 +29,7 @@
 
 % make language selectiong command and environment
 \newcommand\poly@setuplanguage[1]{%
-  % \expandafter\long\expandafter\gdef\csname text#1\endcsname##1{\polyselect@language{#1}\printlang{##1}}
-  \long\csgdef{text#1}##1{\bgroup\polyselect@language{#1}\printlang{##1}\egroup}
+  \long\csgdef{text#1}##1{\bgroup\polyselect@language{#1}##1\egroup}
   \newenvironment{#1}[1][]{\polyselect@language{#1}\Startlang}{\Endlang}
   \poly@load@lang@file{#1}
 }
