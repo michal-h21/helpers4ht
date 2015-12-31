@@ -4,8 +4,7 @@
 % this is used in \text<lang> commands
 \NewConfigure{PrintLang}{2}
 
-\pend:defI\printlang{\a:PrintLang}
-\append:defI\printlang{\b:PrintLang}
+\renewcommand\printlang[1]{\a:PrintLang#1\b:PrintLang}
 
 \Configure{PrintLang}{\HCode{<span lang="\GetLanguage">}}{\HCode{</span>}}
 
