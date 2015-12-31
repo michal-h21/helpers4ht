@@ -1,5 +1,18 @@
 \ProvidesPackage{polyglossia-alt4ht}
-\RequirePackage{etoolbox,xkeyval}
+\RequirePackage{etoolbox,xkeyval,ifluatex}
+
+\ifluatex
+% fixes for gloss-french.ldf
+\directlua{
+polyglossia = {}
+local emptyfn = function() return nil end
+polyglossia.load_frpt = emptyfn
+polyglossia.activate_frpt = emptyfn
+}
+
+\fi
+
+
 
 % we need helper macros which can be configured from tex4ht, because we don't know all possible
 % names for \text<lang> and \begin{<lang>}
