@@ -33,6 +33,9 @@
 local fontspec = require "fontspec-4ht"
 luatexbase.add_to_callback("pre_linebreak_filter", fontspec.char_to_entity, "Char to entity")
 luatexbase.add_to_callback("hpack_filter", fontspec.char_to_entity, "hpack-char-to-entity")
+function add_allowed_font(pattern)
+  table.insert(fontspec.allowed, pattern)
+end
 }
 \else
 

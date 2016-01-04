@@ -63,5 +63,7 @@ function M.char_to_entity(head)
   return head
 end
 
+M.allowed = allowed_names
+
 return M
 

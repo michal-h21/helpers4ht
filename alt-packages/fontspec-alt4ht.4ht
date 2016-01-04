@@ -1,0 +1,8 @@
+% we must individually allow fonts for processing by Lua callbacks, in order to support tfm fonts
+% as cmr is used for text by default, it shouldn't be necessary to add more fonts, as they are likely
+% tfm math fonts 
+\NewConfigure{AllowFont}[1]{%
+  \directlua{add_allowed_font("#1")}
+}
+
+\Configure{AllowFont}{pzdr}
