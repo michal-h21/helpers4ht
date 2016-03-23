@@ -34,6 +34,9 @@ polyglossia.activate_frpt = emptyfn
   \IfFileExists{gloss-#1.ldf}{%
     \ifcsundef{#1@loaded}{%
       \makeatletter
+      \typeout{l@#1}
+      % we don\t use real language numbers from language.dat, because it isn't used at all
+      \csgdef{l@#1}{1}
       \input{gloss-#1.ldf}
       \makeatother
       \csgdef{#1@loaded}{\relax}
