@@ -1,8 +1,18 @@
 \ProvidesPackage{pdfpages-alt4ht}
 \RequirePackage{graphicx}
+\RequirePackage{xkeyval}
+\define@key{includepdf}{pages}{\edef\current@pdf@page{\the\numexpr #1-1\relax}}
 
 \newcommand\includepdf[2][]{%
-    \includegraphics{#2}
-}
+  \def\current@pdf@page{0}
+    \setkeys*{includepdf}{#1}
+    \filename@parse{#2}
+    \def\current@png@name{\filename@area\filename@base-\current@pdf@page.png}
+    \IfFileExists{\current@png@name}{}{%
+      \Needs{"convert #2[\current@pdf@page]
+      \current@png@name"}
+    }
+    \includegraphics{\current@png@name}
+  }
 
-\endinput
+  \endinput
