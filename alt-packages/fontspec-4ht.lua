@@ -1,5 +1,9 @@
 local M = {}
 
+local glyph_id = node.id "glyph"
+local whatsit_id = node.id "whatsit"
+local special_subtype = node.subtype "special"
+
 local escape = function(char)
   -- prepare tex4ht special for entity with unicode value
   return string.format("t4ht@+&{35}x%x{59}", char)
@@ -7,7 +11,7 @@ end
 
 local make_node = function(data)
   -- make special whathsit
-  local n = node.new(8,3)
+  local n = node.new(whatsit_id,special_subtype)
   n.data = data
   return n
 end
@@ -43,7 +47,7 @@ local xchar = string.byte("x")
 
 function M.char_to_entity(head)
   -- traverse characters
-  for n in node.traverse_id(37, head) do
+  for n in node.traverse_id(glyph_id, head) do
     -- we need to process only default text font, ie cmr, because user may request special mathematical fonts,
     -- which should be processed via htf files as usual
     local t = get_font_type(n.font)
