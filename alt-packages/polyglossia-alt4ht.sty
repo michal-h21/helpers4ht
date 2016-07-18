@@ -1,5 +1,6 @@
 \ProvidesPackage{polyglossia-alt4ht}
 \RequirePackage{etoolbox,xkeyval,ifluatex}
+\RequirePackage{fontspec-alt4ht}
 
 \ifluatex
 % fixes for gloss-french.ldf
@@ -52,10 +53,10 @@ polyglossia.activate_frpt = emptyfn
 }
 % save main language so we can work with it later
 % this is basically copied from babel
-\newcommand\setdefaultlanguage[1]{%
-  \gdef\bbl@main@language{#1}%
-  \poly@setuplanguage{#1}
-  \polyselect@language{#1}
+\newcommand\setdefaultlanguage[2][]{%
+  \gdef\bbl@main@language{#2}%
+  \poly@setuplanguage{#2}
+  \polyselect@language{#2}
 }
 
 % this is just alias
@@ -69,6 +70,7 @@ polyglossia.activate_frpt = emptyfn
 
 \newcommand\PolyglossiaSetup[2]{}
 \newcommand\xpg@warning[1]{\typeout{[Polyglossia]: #1}}
+\newcommand\xpg@ifdefined[3]{}
 \newif\ifsystem@babelshorthands
 \system@babelshorthandsfalse
 
