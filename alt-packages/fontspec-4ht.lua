@@ -3,6 +3,8 @@ local M = {}
 local glyph_id = node.id "glyph"
 local whatsit_id = node.id "whatsit"
 local special_subtype = node.subtype "special"
+local dir_id = node.id "dir"
+local glue_id = node.id "glue"
 
 local escape = function(char)
   -- prepare tex4ht special for entity with unicode value
@@ -45,23 +47,30 @@ end
 
 local xchar = string.byte("x")
 
+local utfchar = unicode.utf8.char
 function M.char_to_entity(head)
   -- traverse characters
-  for n in node.traverse_id(glyph_id, head) do
-    -- we need to process only default text font, ie cmr, because user may request special mathematical fonts,
-    -- which should be processed via htf files as usual
-    local t = get_font_type(n.font)
-    if t == true then
-      local char = n.char
-      if char > 127 then
-        local new = escape(char)
-        local x = make_node(new)
-        -- insert tex4ht special before char, it will replace the char
-        node.insert_before(head, n, x)
-        -- in standard tex4ht accented characters are replaced with "x" char. they are later removed anyway
-        -- maybe we don't need to do that, but we can, so why not?
-        n.char = xchar
+  for n in node.traverse(head) do
+    if n.id == glyph_id then
+      -- we need to process only default text font, ie cmr, because user may request special mathematical fonts,
+      -- which should be processed via htf files as usual
+      local t = get_font_type(n.font)
+      if t == true then
+        local char = n.char
+        if char > 127 then
+          local new = escape(char)
+          local x = make_node(new)
+          -- insert tex4ht special before char, it will replace the char
+          node.insert_before(head, n, x)
+          -- in standard tex4ht accented characters are replaced with "x" char. they are later removed anyway
+          -- maybe we don't need to do that, but we can, so why not?
+          n.char = xchar
+        end
       end
+    elseif n.id == dir_id then
+      -- when text direction is TRT, the spaces in the DVI file have negative width and they are not recognized by tex4ht
+      -- so we just change the direction to normal TLT
+      n.dir = "TLT"
     end
   end
   return head
