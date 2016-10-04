@@ -17,7 +17,7 @@ local make_node = function(data)
 end
 
 -- this should be table with patterns for allowed fonts
-local allowed_names = {"^cmr", "^cmb","^cmt", "^cmb", "^cmcs"}
+local allowed_names = {"^cmr", "^cmb","^cmt", "^cmb", "^cmcs", "^rm%-l"}
 
 local testfont = function(name)
   -- test font name for all allowed names, when it is found, return true
