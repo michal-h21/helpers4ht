@@ -1,4 +1,4 @@
-\RequirePackage{verbatim}
+\RequirePackage{verbatim,etoolbox}
 \AtBeginDocument{%
   \Configure{VERSION}{}
   \Configure{DOCTYPE}{\HCode{<!DOCTYPE html>\Hnewline}}
@@ -38,9 +38,11 @@
 }
 % 
 \newcommand\VerbMath[1]{%
+\ifcsdef{#1}{%
   \renewenvironment{#1}{%
     \NoFonts%
     \texttt{\string\begin\{#1\}}%
     \verbatim}{\endverbatim\texttt{\string\end\{#1\}}\EndNoFonts}%
+}{}%
 }
 

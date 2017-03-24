@@ -19,7 +19,7 @@ local make_node = function(data)
 end
 
 -- this should be table with patterns for allowed fonts
-local allowed_names = {"^cmr", "^cmb","^cmt", "^cmb", "^cmcs", "^rm%-l"}
+local allowed_names = {"^cmr", "^cmb","^cmt", "^cmb", "^cmcs", "^rm%-l", "^cmi", "^none"}
 
 local testfont = function(name)
   -- test font name for all allowed names, when it is found, return true
@@ -35,7 +35,7 @@ end
 local fonttypes = {}
 local get_font_type = function(id)
   if fonttypes[id]~=nil then return fonttypes[id] end
-  local f = font.getfont(id)
+  local f = font.getfont(id) or {name = "none"}
   local name = f.name
   local type = testfont(string.lower(name))
   if not type then
