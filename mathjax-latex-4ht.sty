@@ -40,6 +40,7 @@
 \newcommand\VerbMath[1]{%
 \ifcsdef{#1}{%
   \renewenvironment{#1}{%
+  \Configure{verbatim}{}{}
     \NoFonts%
     \texttt{\string\begin\{#1\}}%
     \verbatim}{\endverbatim\texttt{\string\end\{#1\}}\EndNoFonts}%
