@@ -30,15 +30,17 @@
   \Configure{()}{\AltlMath}{}
   \def\AltlDisplay#1\]{\HCode{\detokenize{\[#1\]}}\]}
   \Configure{[]}{\AltlDisplay}{}
+  \def\AltDisplayOne#1#2$${#1\HCode{\detokenize{$$#2$$}}$$}
+  \Configure{$$}{}{}{\AltDisplayOne}{}{}
+  \VerbMath{align}
+  \VerbMath{equation}
+  \VerbMath{equation*}
 }
 % 
 \newcommand\VerbMath[1]{%
   \renewenvironment{#1}{%
     \NoFonts%
-    \string\begin\{#1\}%
-      \verbatim}{\endverbatim\string\end\{#1\}\EndNoFonts}%
+    \texttt{\string\begin\{#1\}}%
+    \verbatim}{\endverbatim\texttt{\string\end\{#1\}}\EndNoFonts}%
 }
 
-\VerbMath{align}
-\VerbMath{equation}
-\VerbMath{equation*}
