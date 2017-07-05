@@ -34,6 +34,7 @@
 \newcommand\VerbMath[1]{%
 \ifcsdef{#1}{%
   \renewenvironment{#1}{%
+  \Configure{verbatim}{}{}
     \NoFonts%
     \HChar{92}begin\{#1\}%
     \verbatim}{\endverbatim\HChar{92}end\{#1\}\EndNoFonts}%
