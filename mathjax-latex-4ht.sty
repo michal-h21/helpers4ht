@@ -1,4 +1,15 @@
-\RequirePackage{verbatim,etoolbox}
+\RequirePackage{etoolbox,l3regex,environ}
+\ExplSyntaxOn
+\cs_new_protected:Npn \alteqtoks #1
+{
+  \tl_set:Nn \l_tmpa_tl {#1}
+  \regex_replace_all:nnN { . } { \c{string} \0 } \l_tmpa_tl
+  \tl_set:Nx \l_tmpb_tl{ \l_tmpa_tl }
+  \HCode{\l_tmpb_tl}
+  % now \l_tmpb_tl contains what you want:
+}
+
+\ExplSyntaxOff
 \AtBeginDocument{%
   \Configure{VERSION}{}
   \Configure{DOCTYPE}{\HCode{<!DOCTYPE html>\Hnewline}}
@@ -24,23 +35,25 @@
   }}
   \Configure{@HEAD}{\HCode{ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> \Hnewline}}
   \newtoks\eqtoks
-  \def\AltMathOne#1${\HCode{\detokenize{\(#1\)}}$}
+  \def\AltMathOne#1${\alteqtoks{\(#1\)}$}
   \Configure{$}{}{}{\expandafter\AltMathOne} 
-  \def\AltlMath#1\){\HCode{\detokenize{\(#1\)}}\)}
+  \def\AltlMath#1\){\alteqtoks{\(#1\)}\)}
   \Configure{()}{\AltlMath}{}
-  \def\AltlDisplay#1\]{\HCode{\detokenize{\[#1\]}}\]}
+  \def\AltlDisplay#1\]{\alteqtoks{\[#1\]}\]}
   \Configure{[]}{\AltlDisplay}{}
-% 
+
+\newcommand\VerbMathToks[2]{%
+  \alteqtoks{\begin{#2}
+    #1
+  \end{#2}}%
+}
 \newcommand\VerbMath[1]{%
 \ifcsdef{#1}{%
-  \renewenvironment{#1}{%
-  \Configure{verbatim}{}{}
-    \NoFonts%
-    \HChar{92}begin\{#1\}%
-    \verbatim}{\endverbatim\HChar{92}end\{#1\}\EndNoFonts}%
+  \RenewEnviron{#1}{%
+  \NoFonts\expandafter\VerbMathToks\expandafter{\BODY}{#1}\EndNoFonts%
+  }
 }{}%
 }
-
 \VerbMath{align}
 \VerbMath{equation}
 \VerbMath{equation*}
