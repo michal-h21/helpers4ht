@@ -1,12 +1,12 @@
-\RequirePackage{etoolbox,l3regex,environ}
+\RequirePackage{etoolbox,expl3,environ}
 \ExplSyntaxOn
 \cs_new_protected:Npn \alteqtoks #1
 {
-  \tl_set:Nn \l_tmpa_tl {#1}
-  \regex_replace_all:nnN { . } { \c{string} \0 } \l_tmpa_tl
+  \tl_set:Nx \l_tmpa_tl {\detokenize{#1}}
+  % delete spaces before left brackets
+  \regex_replace_all:nnN { \x{20} \x{7B} } { \x{7B} } \l_tmpa_tl
   \tl_set:Nx \l_tmpb_tl{ \l_tmpa_tl }
   \HCode{\l_tmpb_tl}
-  % now \l_tmpb_tl contains what you want:
 }
 
 \ExplSyntaxOff
@@ -20,7 +20,7 @@
       MathJax.Hub.Config({
           TeX: {           
             extensions: ["color.js","AMSmath.js"], 
-            equationNumbers: { autoNumber: "AMS" }         
+            equationNumbers: { autoNumber: "AMS" }
           },        
           extensions: ["tex2jax.js"], 
           tex2jax: {       
