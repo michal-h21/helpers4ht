@@ -11,8 +11,6 @@
 
 \ExplSyntaxOff
 \AtBeginDocument{%
-  \Configure{VERSION}{}
-  \Configure{DOCTYPE}{\HCode{<!DOCTYPE html>\Hnewline}}
   \Configure{HTML}{\HCode{<html>\Hnewline}}{\HCode{\Hnewline</html>}}
   %\Configure{@HEAD}{\HCode{<link href="basic.css" rel="stylesheet" type="text/css" />\Hnewline}} 
   \Configure{@HEAD}{\HCode{
@@ -34,7 +32,6 @@
       </script>\Hnewline
   }}
   \Configure{@HEAD}{\HCode{ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> \Hnewline}}
-  \newtoks\eqtoks
   \def\AltMathOne#1${\alteqtoks{\(#1\)}$}
   \Configure{$}{}{}{\expandafter\AltMathOne} 
   \def\AltlMath#1\){\alteqtoks{\(#1\)}\)}
