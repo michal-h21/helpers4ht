@@ -5,6 +5,10 @@
   \tl_set:Nx \l_tmpa_tl {\detokenize{#1}}
   % delete spaces before left brackets
   \regex_replace_all:nnN { \x{20} \x{7B} } { \x{7B} } \l_tmpa_tl
+  % replace < > and & with xml entities
+  \regex_replace_all:nnN { \x{26} } { &amp; } \l_tmpa_tl
+  \regex_replace_all:nnN { \x{3C} } { &lt; } \l_tmpa_tl 
+  \regex_replace_all:nnN { \x{3E} } { &gt; } \l_tmpa_tl
   \tl_set:Nx \l_tmpb_tl{ \l_tmpa_tl }
   \HCode{\l_tmpb_tl}
 }
