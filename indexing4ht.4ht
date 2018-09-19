@@ -30,17 +30,18 @@
    \else\Configure{indexname}{#1}%
 	 \fi%
   \:wrindex{\a:indexname}{#2}{\a:indexvalue}
-  \edef\newseccnt{sec\a:indexvalue}
 	% save identifier only if it haven't been used yet
-  \ifx\newseccnt\curseccnt\else%
+  \expandafter\ifcsname usedsec\a:indexvalue\endcsname
+    \else%
     \Tag{sec\a:indexvalue}{\a:indexidentifier}
   \fi%
+  \expandafter\gdef\csname usedsec\a:indexvalue\endcsname{yes}
   \let\curseccnt\newseccnt
 }
 
 % print index locators. make links to destinations in document
 \newcommand\idxlocator[1]{%
-\ifTag{sec#1}{\a:locatorlink{\Ref{sec#1}}{}#1\b:locatorlink}{#1}%
+\ifTag{sec#1}{\a:locatorlink{\Ref{sec#1}}{}#1\b:locatorlink}{#1} %
 %\ifTag{sec#1}{\Link{\Ref{sec#1}}{}#1\EndLink}{#1}%
 \typeout{\LikeRef{sec#1}}
 }
