@@ -89,9 +89,13 @@
 \VerbMath{math}
 \VerbMath{displaymath}
 
-% fixes
+% fixes for tables of contents
 
-\def\left{\detokenize{\left}}
-\def\right{\detokenize{\right}}
+\def\fixmathjaxtoc#1{\def#1{\detokenize{#1}}}
+\fixmathjaxtoc\left
+\fixmathjaxtoc\right
+\fixmathjaxtoc\int
+\fixmathjaxtoc\,
+
 
   }
