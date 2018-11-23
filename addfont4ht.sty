@@ -1,3 +1,19 @@
+% This package declares new font family in the CSS file
+% Usage:
+%
+% \NormalFont{FontFamilyName}{normal-font-file.otf}
+% \BoldFont{FontFamilyName}{bold-font-file.otf}
+% \BoldItalicFont{FontFamilyName}{bold-italic-font-file.otf}
+% \ItalicFont{FontFamilyName}{italic-font-file.otf}
+% \Css{body{font-family: rmfamily, "FontFamilyName", serif;}}
+% 
+% The default font family name for a declared font is rmfamily
+% It can be changed using \SetFontFamily command.
+
+% It is necessary to provide three names
+% #1 font family name that will be used later in the user CSS
+% #2 font family from the user file system, which will be used if available (so downloading of the fonts is not necessary)
+% #3 filename of the font which should be used if the local version is not available
 \RequirePackage{include4ht}
 \newcommand\AddFontFace[4]{%
 \Css{@font-face {
@@ -8,12 +24,18 @@
  }}
 \AddFile{#3}
 }
+
+% The default font family declared by font definition commands
 \edef\CurrentFontFamily{rmfamily}
+
+% If more font families are used, they need to have different names
 \newcommand\SetFontFamily[1]{
 \edef\CurrentFontFamily{#1}
 }
-\newcommand\NormalFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: normal;font-style: normal;}}
 
+
+% Declarations for common font styles, just local family name and font file name are needed to be provided
+\newcommand\NormalFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: normal;font-style: normal;}}
 \newcommand\BoldFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: bold;font-style: normal;}}
 \newcommand\ItalicFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: normal;font-style: italic;}}
 \newcommand\BoldItalicFont[2]{\AddFontFace{\CurrentFontFamily}{#1}{#2}{font-weight: bold;font-style: italic;}}
