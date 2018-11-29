@@ -12,7 +12,7 @@ cssframework
 
 include4ht 
 
-:    declare additional files to be included, like CSS or Javascript. [Example](http://tex.stackexchange.com/a/210849/2891)
+:    declare additional files to be included, like CSS or Javascript. [Example](http://tex.stackexchange.com/a/210849/2891). This file is deprecated, tex4ht now provides `\Configure{AddJs}{filename.js}` and `\Configure{AddCss}{filename.css}` commands for the HTML output.
 
 indexing4ht
 
