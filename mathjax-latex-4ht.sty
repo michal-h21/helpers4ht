@@ -89,6 +89,11 @@
 \VerbMath{math}
 \VerbMath{displaymath}
 
+% it is necessary to reset env configurations for multline 
+\ConfigureEnv{multline}{}{}{}{}
+\ConfigureEnv{multline*}{}{}{}{}
+
+
 % fixes for tables of contents
 
 \def\fixmathjaxtoc#1{\def#1{\detokenize{#1}}}
