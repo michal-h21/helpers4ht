@@ -2,6 +2,10 @@
 
 This is a bundle of packages providing support for tex4ht configuration. With exception of `alternative4ht`, you shouldn't use them in your documents, but in the `.cfg` files instead. Provided packages are:
 
+addfont4ht
+
+:    support for web fonts. [Example](https://tex.stackexchange.com/a/289562/2891).
+
 alternative4ht
 
 :    provides support for patching unsupported packages with tex4ht. See [Using fontspec package with tex4ht](http://michal-h21.github.io/samples/helpers4ht/fontspec.html) for example.
