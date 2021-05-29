@@ -24,7 +24,7 @@ indexing4ht
 
 rfclang
 
-:    get RFC language codes from babel language name
+:    get RFC language codes from babel language name. This functionality is built in TeX4ht itself, so this package is obsolete.
 
 textstyle4ht
 
