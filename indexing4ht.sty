@@ -28,6 +28,14 @@
 													:sep "." "arabic-numbers"
 													:sep "." "arabic-numbers"
 ))
+( define-location-class "appendix" :var
+                        ("ALPHA"
+             :sep "." "arabic-numbers"
+             :sep "." "arabic-numbers"
+             :sep "." "arabic-numbers"
+             :sep "." "arabic-numbers"
+))
+
 (require "texindy.xdy")
 (markup-keyword :open "\idxkeyword{" :close "}" )
 (markup-locref :open "\idxlocator{" :close "}")

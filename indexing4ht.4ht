@@ -41,9 +41,9 @@
 
 % print index locators. make links to destinations in document
 \newcommand\idxlocator[1]{%
-\ifTag{sec#1}{\a:locatorlink{\Ref{sec#1}}{}#1\b:locatorlink}{#1} %
+\ifTag{sec#1}{\a:locatorlink{\LikeRef{sec#1}}{}#1\b:locatorlink}{#1}%
 %\ifTag{sec#1}{\Link{\Ref{sec#1}}{}#1\EndLink}{#1}%
-\typeout{\LikeRef{sec#1}}
+\typeout{\LikeRef{sec#1}}%
 }
 
 \NewConfigure{locatorlink}{2}
